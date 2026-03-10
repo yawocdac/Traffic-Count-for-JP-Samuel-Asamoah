@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Traffic Count System</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#f2f4f7;
+padding:40px;
+}
+
+.container{
+background:white;
+padding:25px;
+border-radius:10px;
+max-width:800px;
+margin:auto;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h2{
+text-align:center;
+}
+
+select{
+padding:10px;
+width:100%;
+margin-bottom:10px;
+}
+
+button{
+padding:10px;
+margin:5px;
+border:none;
+background:#007bff;
+color:white;
+cursor:pointer;
+border-radius:5px;
+}
+
+.counter{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin:6px 0;
+}
+
+.count{
+font-size:18px;
+font-weight:bold;
+}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:8px;
+text-align:center;
+}
+
+th{
+background:#007bff;
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Traffic Count & Fuel Volume Record</h2>
+
+<label>Company</label>
+
+<select id="company">
+<option value="">Select Company</option>
+<option>Shell</option>
+<option>Total Energies</option>
+<option>GOIL</option>
+<option>Puma</option>
+<option>Allied</option>
+<option>Star Oil</option>
+<option>Petrosol</option>
+<option>Zen Petroleum</option>
+</select>
+
+<label>Volume Bought</label>
+
+<select id="volume">
+<option value="">Select Volume</option>
+<option>5 Litres</option>
+<option>10 Litres</option>
+<option>20 Litres</option>
+<option>30 Litres</option>
+<option>40 Litres</option>
+<option>50 Litres</option>
+<option>Above 50 Litres</option>
+</select>
+
+<h3>Vehicle Count</h3>
+
+<div class="counter">Trotro <span class="count" id="trotro">0</span>
+<button onclick="add('trotro')">+</button></div>
+
+<div class="counter">Bus <span class="count" id="bus">0</span>
+<button onclick="add('bus')">+</button></div>
+
+<div class="counter">Motorcycle <span class="count" id="motorcycle">0</span>
+<button onclick="add('motorcycle')">+</button></div>
+
+<div class="counter">Truck/Lorry <span class="count" id="truck">0</span>
+<button onclick="add('truck')">+</button></div>
+
+<div class="counter">Taxi <span class="count" id="taxi">0</span>
+<button onclick="add('taxi')">+</button></div>
+
+<div class="counter">Uber/Bolt/Others <span class="count" id="uber">0</span>
+<button onclick="add('uber')">+</button></div>
+
+<div class="counter">Private Cars <span class="count" id="private">0</span>
+<button onclick="add('private')">+</button></div>
+
+<br>
+
+<button onclick="saveRecord()">Save Record</button>
+
+<table id="table">
+
+<tr>
+<th>Date</th>
+<th>Company</th>
+<th>Volume</th>
+<th>Trotro</th>
+<th>Bus</th>
+<th>Motorcycle</th>
+<th>Truck</th>
+<th>Taxi</th>
+<th>Uber/Bolt</th>
+<th>Private</th>
+</tr>
+
+</table>
+
+</div>
+
+<script>
+
+function add(type){
+let element = document.getElementById(type);
+element.innerText = parseInt(element.innerText) + 1;
+}
+
+function saveRecord(){
+
+let company = document.getElementById("company").value;
+let volume = document.getElementById("volume").value;
+
+let trotro = document.getElementById("trotro").innerText;
+let bus = document.getElementById("bus").innerText;
+let motorcycle = document.getElementById("motorcycle").innerText;
+let truck = document.getElementById("truck").innerText;
+let taxi = document.getElementById("taxi").innerText;
+let uber = document.getElementById("uber").innerText;
+let privatecar = document.getElementById("private").innerText;
+
+let date = new Date().toLocaleString();
+
+let table = document.getElementById("table");
+let row = table.insertRow(-1);
+
+row.insertCell(0).innerHTML = date;
+row.insertCell(1).innerHTML = company;
+row.insertCell(2).innerHTML = volume;
+row.insertCell(3).innerHTML = trotro;
+row.insertCell(4).innerHTML = bus;
+row.insertCell(5).innerHTML = motorcycle;
+row.insertCell(6).innerHTML = truck;
+row.insertCell(7).innerHTML = taxi;
+row.insertCell(8).innerHTML = uber;
+row.insertCell(9).innerHTML = privatecar;
+
+resetCounts();
+
+}
+
+function resetCounts(){
+
+let types = ["trotro","bus","motorcycle","truck","taxi","uber","private"];
+
+types.forEach(function(type){
+document.getElementById(type).innerText = 0;
+});
+
+}
+
+</script>
+
+</body>
+</html>

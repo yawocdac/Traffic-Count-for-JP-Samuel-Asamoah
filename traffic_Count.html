@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Traffic Count System</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#e8f5e9;
+padding:30px;
+}
+
+.container{
+background:white;
+padding:25px;
+border-radius:10px;
+max-width:700px;
+margin:auto;
+border-top:8px solid red;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h2{
+text-align:center;
+color:#2e7d32;
+}
+
+input,select{
+padding:10px;
+width:100%;
+margin-bottom:12px;
+border-radius:5px;
+border:1px solid #ccc;
+}
+
+button{
+padding:12px;
+border:none;
+border-radius:5px;
+cursor:pointer;
+font-weight:bold;
+margin-top:8px;
+}
+
+.addBtn{
+background:#ffeb3b;
+}
+
+.saveBtn{
+background:#2e7d32;
+color:white;
+}
+
+.exportBtn{
+background:red;
+color:white;
+}
+
+.counter{
+background:#c8e6c9;
+padding:10px;
+margin:5px 0;
+border-radius:5px;
+display:flex;
+justify-content:space-between;
+font-weight:bold;
+}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+}
+
+th{
+background:#2e7d32;
+color:white;
+padding:8px;
+}
+
+td{
+border:1px solid #ddd;
+padding:8px;
+text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Traffic Count & Fuel Record</h2>
+
+<label>Company</label>
+<input type="text" id="company" placeholder="Enter company">
+
+<label>Volume Bought (Litres)</label>
+<input type="number" id="volume" placeholder="Enter litres">
+
+<label>Vehicle Type</label>
+
+<select id="vehicle">
+<option value="">Select vehicle</option>
+<option value="Trotro">Trotro</option>
+<option value="Bus">Bus</option>
+<option value="Motorcycle">Motorcycle</option>
+<option value="Truck/Lorry">Truck/Lorry</option>
+<option value="Taxi">Taxi</option>
+<option value="Uber/Bolt/Others">Uber/Bolt/Others</option>
+<option value="Private Car">Private Car</option>
+</select>
+
+<button class="addBtn" onclick="addVehicle()">Add Vehicle</button>
+
+<h3>Vehicle Count</h3>
+
+<div class="counter">Trotro <span id="trotro">0</span></div>
+<div class="counter">Bus <span id="bus">0</span></div>
+<div class="counter">Motorcycle <span id="motorcycle">0</span></div>
+<div class="counter">Truck/Lorry <span id="truck">0</span></div>
+<div class="counter">Taxi <span id="taxi">0</span></div>
+<div class="counter">Uber/Bolt/Others <span id="uber">0</span></div>
+<div class="counter">Private Car <span id="private">0</span></div>
+
+<button class="saveBtn" onclick="saveRecord()">Save Record</button>
+
+<button class="exportBtn" onclick="exportExcel()">Export to Excel</button>
+
+<table id="table">
+
+<tr>
+<th>Date</th>
+<th>Company</th>
+<th>Litres</th>
+<th>Trotro</th>
+<th>Bus</th>
+<th>Motorcycle</th>
+<th>Truck</th>
+<th>Taxi</th>
+<th>Uber/Bolt</th>
+<th>Private</th>
+</tr>
+
+</table>
+
+</div>
+
+<script>
+
+function addVehicle(){
+
+let vehicle = document.getElementById("vehicle").value
+
+if(vehicle == ""){
+alert("Select vehicle type")
+return
+}
+
+let id = vehicle.toLowerCase().replace("/lorry","").replace(" ","").replace("/","")
+
+if(vehicle == "Truck/Lorry") id="truck"
+if(vehicle == "Private Car") id="private"
+if(vehicle == "Uber/Bolt/Others") id="uber"
+
+let element = document.getElementById(id)
+
+element.innerText = parseInt(element.innerText) + 1
+
+}
+
+function saveRecord(){
+
+let company = document.getElementById("company").value
+let volume = document.getElementById("volume").value
+
+let trotro = document.getElementById("trotro").innerText
+let bus = document.getElementById("bus").innerText
+let motorcycle = document.getElementById("motorcycle").innerText
+let truck = document.getElementById("truck").innerText
+let taxi = document.getElementById("taxi").innerText
+let uber = document.getElementById("uber").innerText
+let privatecar = document.getElementById("private").innerText
+
+let date = new Date().toLocaleString()
+
+let table = document.getElementById("table")
+
+let row = table.insertRow(-1)
+
+row.insertCell(0).innerHTML = date
+row.insertCell(1).innerHTML = company
+row.insertCell(2).innerHTML = volume
+row.insertCell(3).innerHTML = trotro
+row.insertCell(4).innerHTML = bus
+row.insertCell(5).innerHTML = motorcycle
+row.insertCell(6).innerHTML = truck
+row.insertCell(7).innerHTML = taxi
+row.insertCell(8).innerHTML = uber
+row.insertCell(9).innerHTML = privatecar
+
+resetCounts()
+
+}
+
+function resetCounts(){
+
+let ids = ["trotro","bus","motorcycle","truck","taxi","uber","private"]
+
+ids.forEach(function(id){
+document.getElementById(id).innerText = 0
+})
+
+}
+
+function exportExcel(){
+
+let table = document.getElementById("table")
+let rows = table.rows
+let csv = []
+
+for(let i=0;i<rows.length;i++){
+
+let cols = rows[i].querySelectorAll("td, th")
+let row = []
+
+for(let j=0;j<cols.length;j++){
+row.push(cols[j].innerText)
+}
+
+csv.push(row.join(","))
+
+}
+
+let csvFile = new Blob([csv.join("\n")],{type:"text/csv"})
+
+let downloadLink = document.createElement("a")
+
+downloadLink.download = "traffic_data.csv"
+downloadLink.href = window.URL.createObjectURL(csvFile)
+
+downloadLink.click()
+
+}
+
+</script>
+
+</body>
+</html>
